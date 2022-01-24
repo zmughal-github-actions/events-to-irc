@@ -3,23 +3,23 @@ inputs:
   repository_owner:
     description: Organization/owner that notifications are triggered for.
     required: true
-    default: 'PDLPorters'
+    default: ''
   repository:
     description: Repository that notifications are triggered for.
     required: true
     default: ''
   irc-channel:
     required: true
-    default: '#pdl'
+    default: ''
   irc-server:
     required: true
-    default: 'irc.perl.org'
+    default: ''
   irc-port:
     required: true
-    default: '6667'
+    default: ''
   irc-nickname:
     required: true
-    default: 'pdl-commits'
+    default: ''
   irc-tls:
     required: true
     default: false

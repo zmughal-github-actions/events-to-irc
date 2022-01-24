@@ -187,6 +187,32 @@ runs:
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
         INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
+    - name: irc pull request review
+      shell: bash
+      run: |
+          if ${{ toJSON(
+                   fromJSON(inputs.target-notifications)
+                   && github.event_name == 'pull_request_review'
+                   && (
+                         github.repository_owner == inputs.repository_owner
+                      || github.repository == inputs.repository
+                      )
+                 ) }}; then
+            echo "::group::IRC notification (pull request review)"
+            parallel -N0 -t --retries 3 --delay $(( 2 + $RANDOM % 6 )) node .github/actions/irc-message-action/app.js ::: 0
+            echo "::endgroup::"
+          fi
+      env:
+        INPUT_MESSAGE: |
+          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] ${{ env.color_actor }}${{ github.actor }}${{ env.color_reset }} ${{ github.event.action }} review on PR «${{ github.event.pull_request.title }}» ${{ env.color_url }}${{ github.event.pull_request.html_url }}${{ env.color_reset }}
+        # Common inputs for Gottox/irc-message-action@v2.1.1
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
+        INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
     - name: irc tag created
       shell: bash
       run: |

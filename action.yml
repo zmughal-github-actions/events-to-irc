@@ -35,6 +35,13 @@ inputs:
       in using toJSON(). Only required for the
       target-build-status target.
     required: false
+  build-status-source:
+    description: |
+      Optional description of the source of the build status.
+
+      Only used by the target-build-status target.
+    required: false
+    default: 'ci'
   target-notifications:
     description: |
       Flag for target that notifies on various events.
@@ -340,7 +347,7 @@ runs:
           fi
       env:
         INPUT_MESSAGE: |
-          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] [build/${{ github.event_name }}]: ${{env.color_success}}∀S ✓${{env.color_reset}}${{ env.irc_msgpart_cancelled }} ${{ env.commitmsg }} ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
+          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] [build/${{ inputs.build-status-source }}/${{ github.event_name }}]: ${{env.color_success}}∀S ✓${{env.color_reset}}${{ env.irc_msgpart_cancelled }} ${{ env.commitmsg }} ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
         # Common inputs for Gottox/irc-message-action@v2.1.1
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
@@ -362,7 +369,7 @@ runs:
           fi
       env:
         INPUT_MESSAGE: |
-          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] [build/${{ github.event_name }}]: ${{env.color_failure}}∃F ✗${{env.color_reset}} ${{ env.commitmsg }} ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
+          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] [build/${{ inputs.build-status-source }}/${{ github.event_name }}]: ${{env.color_failure}}∃F ✗${{env.color_reset}} ${{ env.commitmsg }} ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
         # Common inputs for Gottox/irc-message-action@v2.1.1
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}

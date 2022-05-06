@@ -115,7 +115,7 @@ runs:
         map_color_branch: 'GREEN'
         map_color_success: 'GREEN'
         map_color_failure: 'RED'
-        map_color_cancelled: 'TEAL'
+        map_color_cancelled: 'RED'
         map_color_insertion: 'GREEN'
         map_color_deletion: 'RED'
         map_color_modification: 'YELLOW'
@@ -337,9 +337,12 @@ runs:
       run: |
           if ${{ toJSON(
                       fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS)
-                   && (
-                        ! contains(fromJSON(inputs.needs).*.result, 'failure')
-                      )
+                   &&
+                   ! (
+                     contains(fromJSON(inputs.needs).*.result, 'failure')
+                     ||
+                     contains(fromJSON(inputs.needs).*.result, 'cancelled')
+                   )
                  ) }}; then
             echo "::group::IRC notification (build status: success)"
             parallel -N0 -t --retries 3 --delay $(( 2 + $RANDOM % 6 )) node .github/actions/irc-message-action/app.js ::: 0
@@ -347,7 +350,7 @@ runs:
           fi
       env:
         INPUT_MESSAGE: |
-          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] [build/${{ inputs.build-status-source }}/${{ github.event_name }}]: ${{env.color_success}}∀S ✓${{env.color_reset}}${{ env.irc_msgpart_cancelled }} ${{ env.commitmsg }} ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
+          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] [build/${{ inputs.build-status-source }}/${{ github.event_name }}]: ${{env.color_success}}∀S ✓${{env.color_reset}} ${{ env.commitmsg }} ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
         # Common inputs for Gottox/irc-message-action@v2.1.1
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
@@ -361,7 +364,12 @@ runs:
       run: |
           if ${{ toJSON(
                       fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS)
-                   && contains(fromJSON(inputs.needs).*.result, 'failure')
+                   &&
+                   (
+                     contains(fromJSON(inputs.needs).*.result, 'failure')
+                     ||
+                     contains(fromJSON(inputs.needs).*.result, 'cancelled')
+                   )
                  ) }}; then
             echo "::group::IRC notification (build status: failure)"
             parallel -N0 -t --retries 3 --delay $(( 2 + $RANDOM % 6 )) node .github/actions/irc-message-action/app.js ::: 0
@@ -369,7 +377,7 @@ runs:
           fi
       env:
         INPUT_MESSAGE: |
-          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] [build/${{ inputs.build-status-source }}/${{ github.event_name }}]: ${{env.color_failure}}∃F ✗${{env.color_reset}} ${{ env.commitmsg }} ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
+          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] [build/${{ inputs.build-status-source }}/${{ github.event_name }}]: ${{env.color_failure}}∃F ✗${{env.color_reset}}${{ env.irc_msgpart_cancelled }} ${{ env.commitmsg }} ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
         # Common inputs for Gottox/irc-message-action@v2.1.1
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}

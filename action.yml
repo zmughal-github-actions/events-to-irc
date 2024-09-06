@@ -58,10 +58,10 @@ runs:
   steps:
     # actions/checkout of the repo is used by both targets
     # (target-notifications, target-build-status).
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         repository: Gottox/irc-message-action
         ref: v2.1.1

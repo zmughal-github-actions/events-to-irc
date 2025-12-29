@@ -29,6 +29,9 @@ inputs:
   irc-excess-flood:
     required: false
     default: 'throttle'
+  irc-debug:
+    required: true
+    default: true
   needs:
     description: |
       The GitHub Actions `need` context which should be passed
@@ -168,6 +171,7 @@ runs:
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
         INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
+        INPUT_DEBUG: ${{ inputs.irc-debug }}
     - name: irc pull request
       shell: bash
       run: |
@@ -194,6 +198,7 @@ runs:
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
         INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
+        INPUT_DEBUG: ${{ inputs.irc-debug }}
     - name: irc pull request review
       shell: bash
       run: |
@@ -220,6 +225,7 @@ runs:
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
         INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
+        INPUT_DEBUG: ${{ inputs.irc-debug }}
     - name: irc tag created
       shell: bash
       run: |
@@ -247,6 +253,7 @@ runs:
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
         INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
+        INPUT_DEBUG: ${{ inputs.irc-debug }}
     - name: irc issue
       shell: bash
       run: |
@@ -273,6 +280,7 @@ runs:
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
         INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
+        INPUT_DEBUG: ${{ inputs.irc-debug }}
     - name: irc comment
       shell: bash
       run: |
@@ -299,6 +307,7 @@ runs:
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
         INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
+        INPUT_DEBUG: ${{ inputs.irc-debug }}
     # Target: target-build-status
     - name: Set target-build-status conditional env
       shell: bash
@@ -359,6 +368,7 @@ runs:
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
         INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
+        INPUT_DEBUG: ${{ inputs.irc-debug }}
     - name: IRC build failure
       shell: bash
       run: |
@@ -386,3 +396,4 @@ runs:
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
         INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
+        INPUT_DEBUG: ${{ inputs.irc-debug }}

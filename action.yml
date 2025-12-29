@@ -67,7 +67,7 @@ runs:
     - uses: actions/checkout@v4
       with:
         repository: Gottox/irc-message-action
-        ref: v2.1.1
+        ref: v2.1.5
         path: .github/actions/irc-message-action
     - name: Set up environment variables (e.g., IRC colors)
       shell: bash
